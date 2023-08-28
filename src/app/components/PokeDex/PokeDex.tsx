@@ -2,18 +2,18 @@
 
 import Pokemon from "@/app/types/types";
 import PokedexStyle from "./PokedexStyle.module.css"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 interface PokeDexProps {
-  pokemon: Pokemon;
+  pkm: Pokemon;
   pokeList: Pokemon[];
 }
 
-const PokeDex: React.FC<PokeDexProps> = ({ pokemon, pokeList }) => {
+const PokeDex: React.FC<PokeDexProps> = ({ pkm, pokeList }) => {
 
     const [won, setWon] = useState(false)
-    const [pokemonImage, setPokemonImage] = useState(pokemon.image);
+    const [pokemon, setPokemon] = useState(pkm);
    
     
     function playGame(pokemonSelect:string) {

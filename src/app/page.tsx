@@ -13,7 +13,7 @@ export default async function Home() {
   return (
     <main >
       <h1>Quien es ese Pokemon???</h1>
-      <PokeDex pokemon={pokemon} pokeList={pokeList}/>      
+      <PokeDex pkm={pokemon} pokeList={pokeList}/>      
     </main>
   )
 }
