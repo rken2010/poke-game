@@ -38,7 +38,7 @@ const PokeDex: React.FC<PokeDexProps> = ({ pokemon, pokeList }) => {
                   width={512}
                   height={512}
                   style={{imageRendering:"pixelated", filter:"brightness(0)"}}
-                  src={pokemon.sprites.front_default} alt={pokemon.name} />
+                  src={pokemon.image} alt={pokemon.name} />
         </div>
         <div className="flex">
           {pokeList.map((poke)=>(<button onClick={()=>{playGame(poke.name)}} type="submit" value={poke.name} className="nes-btn" key={poke.name}>{poke.name}</button>))}
@@ -51,7 +51,7 @@ const PokeDex: React.FC<PokeDexProps> = ({ pokemon, pokeList }) => {
                   width={512}
                   height={512}
                   style={{imageRendering:"pixelated"}}
-                  src={pokemon.sprites.front_default} alt={pokemon.name} />
+                  src={pokemon.image} alt={pokemon.name} />
             <menu className="dialog-menu">
               <button className="nes-btn">Ok</button>
               <button className="nes-btn is-primary" onClick={()=> location.reload()}>Play Again</button>
