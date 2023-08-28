@@ -13,6 +13,7 @@ interface PokeDexProps {
 const PokeDex: React.FC<PokeDexProps> = ({ pokemon, pokeList }) => {
 
     const [won, setWon] = useState(false)
+    const [pokemonImage, setPokemonImage] = useState(pokemon.image);
    
     
     function playGame(pokemonSelect:string) {
