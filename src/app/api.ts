@@ -3,7 +3,6 @@ const api = {
     const MAX_POKEMON = 1015;
     const API_URL = "https://pokeapi.co/api/v2/pokemon/";
     const randomNumber = Math.floor(Math.random() * MAX_POKEMON);
-    console.log(randomNumber);
     const url = API_URL + randomNumber;
     return fetch(url)
       .then((res) => res.json())
