@@ -13,11 +13,7 @@ interface PokeDexProps {
 const PokeDex: React.FC<PokeDexProps> = ({ pokemon, pokeList }) => {
 
     const [won, setWon] = useState(false)
-    useEffect(() => {
-      if (won) {
-        location.reload();
-      }
-    }, [won]);
+   
     
     function playGame(pokemonSelect:string) {
       let select = pokemonSelect
@@ -59,7 +55,7 @@ const PokeDex: React.FC<PokeDexProps> = ({ pokemon, pokeList }) => {
                   src={pokemon.image} alt={pokemon.name} />
             <menu className="dialog-menu">
               <button className="nes-btn">Ok</button>
-              <button className="nes-btn is-primary">Play Again</button>
+              <button className="nes-btn is-primary" onClick={()=> location.reload()}>Play Again</button>
             </menu>
           </form>
         </dialog>
