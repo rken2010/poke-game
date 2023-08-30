@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     fontFamily: {
       sans: ['Press Start 2P', 'sans-serif'],
-      serif: ['Merriweather', 'serif'],
+      serif: ['Press Start 2P', 'serif'],
     },
     extend: {
       backgroundImage: {

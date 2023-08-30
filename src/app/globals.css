@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind utilities;
-@tailwind components;
+
 
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
@@ -10,7 +8,7 @@
   
 }
 
-body {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 120px;
+h1{
+  text-align: center;
+  margin: 1.5rem;
 }
