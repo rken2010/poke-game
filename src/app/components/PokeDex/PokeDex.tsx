@@ -60,7 +60,7 @@ export default function PokeDex()   {
         </div>
         <div className={PokedexStyle.containerOptions}>
           {pokeOption?.map((poke)=>(
-            <Suspense fallback={<LoadingPokeDex/>}>
+            <Suspense fallback={<LoadingPokeDex/>} key={poke?.name}>
             <button onClick={()=>{playGame(poke?.name)}} type="submit" value={poke?.name} className="nes-btn" key={poke?.name}>{poke?.name}</button>
             </Suspense>
             ))
