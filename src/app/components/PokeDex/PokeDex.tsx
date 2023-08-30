@@ -3,6 +3,7 @@
 import Pokemon from "@/app/types/types";
 import PokedexStyle from "./PokedexStyle.module.css"
 import { useState, useEffect } from "react";
+import api from "@/app/api";
 
 
 interface PokeDexProps {
@@ -14,7 +15,12 @@ const PokeDex: React.FC<PokeDexProps> = ({ pkm, pokeList }) => {
 
     const [won, setWon] = useState(false)
     const [pokemon, setPokemon] = useState(pkm);
-   
+    
+    useEffect(() => {
+      api.getPokemon().then(newPkm => {
+        setPokemon(newPkm);
+      });
+    }, []);
     
     function playGame(pokemonSelect:string) {
       let select = pokemonSelect
