@@ -20,9 +20,11 @@ export default function PokeDex()   {
         const pk1 = await api.getPokemon();
         const pk2 = await api.getPokemon();
         const pkm = await api.getPokemon();
-        api.shuffle(pkm)
-        setPokemon(pkm)
-        setPokeoption([pk1, pk2, pkm]);
+        const pokemons = [pk1, pk2, pkm] as any[];
+
+        api.shuffle(pokemons);
+        setPokemon(pkm);
+        setPokeoption(pokemons);
       };
         fetchPokemons();
     }, []);
