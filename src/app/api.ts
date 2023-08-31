@@ -18,10 +18,10 @@ const api = {
         }
       );
   },
-  shuffle:(arr:any[]) =>{
-	  let i:number
+  shuffle:(arr: any[]) =>{
+    let i:number
     let j:number
-    let temp
+    let temp:number
     for (i = arr.length - 1; i > 0; i--) {
         j = Math.floor(Math.random() * (i + 1));
         temp = arr[i];
