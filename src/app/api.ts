@@ -18,9 +18,9 @@ const api = {
         }
       );
   },
-  shuffle:(arr) =>{
-	  let i
-    let j
+  shuffle:(arr:any[]) =>{
+	  let i:number
+    let j:number
     let temp
     for (i = arr.length - 1; i > 0; i--) {
         j = Math.floor(Math.random() * (i + 1));
