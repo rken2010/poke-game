@@ -1,34 +1,133 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PROYECTO POKEGAME
+Este Proyecto es un juego de adivinar el Pokemon. Consiste en mostrar una imagen de un Pokemon y adivinar de las tres opciones a que Pokemon corresponde.
+<insertar captura de pantalla>
 
-## Getting Started
+## Armado
 
-First, run the development server:
+### Creacion del Proyecto:
+Creamos nuestro proyecto en Next JS abriendo la terminal y usando el comando `npx create-next-app@latest`
+ En este caso lo cree con las opciones preestablecidas ( Typescript, Tailwind,etc)
+ 
+### API:
+Cree un archivo `api.ts`. En el incluyo un objeto api con las funciones para obtener los datos. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+     const api = {
+      getPokemon: async() => {
+        const MAX_POKEMON = 1015;
+        const API_URL = "https://pokeapi.co/api/v2/pokemon/";
+        const randomNumber=Math.floor(Math.random()*MAX_POKEMON);
+        const url = API_URL + randomNumber;
+        return fetch(url)
+          .then((res) => res.json())
+          .then((data) => {
+            const pkm = {
+              name: data.name,
+              image: data.sprites.front_default,
+            };
+            return pkm;
+          })
+          .catch((err) => {
+                      throw err;
+            }
+          );
+      },
+      shuffle:(arr: any[]) =>{
+        let i:number
+        let j:number
+        let temp:number
+        for (i = arr.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+        return arr;    
+      }
+    };
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+export default api;
+**getPokemon** contiene tres constantes:
+La primera marca el máximo en el valor del ID de Pokemones
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+La segunda se utiliza para indicar la dirección de donde realizaremos el *fetch* de los datos, en este caso será la **PokeAPI** 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+La tercera será una mini función donde obtendremos un número al azar que será el número ID para traer a nuestro Pokemon. Con Math.floor nos aseguramos que sea un número entero y math.random multiplicado por el número maximo de Pokemons para generar el número aleatorio.
 
-## Learn More
+> Utilizamos una constante MAX_POKEMON para limitar el número al azar que nos traera math.random. Si no lo hacemos el fetch nos genera problemas de no encontrar un Pokemon si sobrepasa la cantidad existente.
 
-To learn more about Next.js, take a look at the following resources:
+Por ultimo tenemos una constante con la direccion donde haremos el fetch con la combinacion de la URL de PokeAPI y el número al azar.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Fetch
+Hacemos el fetch con la URL obtenida, con un `then` convertimos el JSON de respuesta
+otro `then` para crear nuestro objeto pkm que sera la que usaremos en nuestro componente y lo retornamos.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### shuffle
+Para mezclar las opciones de Pokemones busque un algoritmo de mezcla de Arrays ( algoritmo Fisher-Yates ), 
 
-## Deploy on Vercel
+    shuffle:(arr: any[]) =>{
+    let i:number
+    let j:number
+    let temp:number
+    for (i = arr.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    return arr;    
+  
+## Componente PokeDex
+Para mostrar los Pokemons cree un componente con el nombre PokeDex
+Para empezar como utilizaremos Hooks de Reacts deberemos indicar que este componente es del tipo *Client Component* de Next. Esto es porque necesitaremos interacción en nuestra APP ( cambiar el Pokemon, elegir una opcion, indicar si ganamos o perdimos). Para esto en el inicio debemos indicar `"use client"` en el inicio del código como si fuera un titulo. 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+> Mas información de Client components en https://nextjs.org/docs/app/building-your-application/rendering/client-components
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**PokeDex** tendra tres useStates
+
+    const [won, setWon] = useState(false)
+    const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+    const [pokeOption, setPokeoption] = useState<Pokemon[]>([]);
+
+El primero para obtener el resultado del juego (si ganamos o perdemos)
+El segundo para nuestro Pokemon para jugar
+y el tercero nuestro Array de opciones para elegir en el juego.
+
+Contara con un useEffect para traer los datos al renderizar
+
+    useEffect(() => {
+      const fetchPokemons = async () => {
+        const pk1 = await api.getPokemon();
+        const pk2 = await api.getPokemon();
+        const pkm = await api.getPokemon();
+        const pokemons = [pk1, pk2, pkm] as any[];
+
+        api.shuffle(pokemons);
+        setPokemon(pkm);
+        setPokeoption(pokemons);
+      };
+        fetchPokemons();
+    }, []);
+En el traemos nuestras promesas del archivo API para obtener tres Pokemones y los agregamos a un Array que será lo que renderizamos como opciones a elegir.
+con `api.shuffle` mezclamos el Array con las opciones.
+Despues guardamos los estados. La constante pkm la guardamos en setPokemon que será nuestro Pokemon en juego y del cual renderizaremos la imagen que hay que adivinar. El Array lo guardamos en el estado setPokeoption que sera lo que rendericemos como opciones para elegir.
+Finalmente ejecutamos `fetchPokemon()` que realizara todo este proceso 
+
+> Antes de usar el useEffect, trate de implementar este proceso utilizando solo las props de los componentes, lo que no funciono ya que no volvia a hacer la promesa al renderizar nuevamente (localmente si funcionaba no me peguen). Y si useEffect esta para eso 
+(◔_◔)....
+
+
+## Fuentes
+
+ - Para la idea y realizacion del proyecto:
+ Use el streaming de Goncy (https://www.twitch.tv/goncy.pozzo) en donde hacen tres proyectos. Lo pueden ver en Youtube:
+https://youtube.com/watch?v=YMfUaHFKI0I&si=YX1yKnNF7oWmX4VI
+ - API
+ Use la PokeAPI para obtener los datos de los Pokemons, de alli obtuve el nombre y la imagen de los Pokemones
+ https://pokeapi.co/
+ - Librerias:
+Use NES.css NES-style CSS Framework para el diseño
+https://nostalgic-css.github.io/NES.css/#
+NextJS para el armado del Proyecto
+https://nextjs.org/
+ - Algoritmo Fisher-Yates
+https://www.jstips.co/es_es/javascript/shuffle-an-array/
